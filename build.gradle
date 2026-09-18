@@ -44,16 +44,16 @@ repositories {
     maven { url = 'https://cursemaven.com' }
 }
 
-def localModJars = fileTree(dir: 'libs', includes: ['*.jar'])
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // This is intentionally a normal compile/runtime dependency. The addon only
-    // references the public API; ForgeGradle deobfuscation is not required for it.
-    implementation localModJars
+    // CurseForge file 8237094 is the Forge 1.20.1 build of ISnS 3.16.1.
+    // Using CurseMaven avoids accidentally compiling against a client/API/NeoForge jar.
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8237094")
 }
 
+// Ignore the unused example package included by the Forge MDK zip.
+sourceSets.main.java.exclude('com/example/examplemod/**')
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 processResources {
