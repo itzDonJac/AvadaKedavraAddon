@@ -1,0 +1,14 @@
+{
+  "language": {
+    "en_us": {
+      "name": "English (US)",
+      "region": "US",
+      "bidirectional": false
+    },
+    "it_it": {
+      "name": "Italiano (IT)",
+      "region": "IT",
+      "bidirectional": false
+    }
+  }
+}

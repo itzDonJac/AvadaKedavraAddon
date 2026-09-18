@@ -1,0 +1,40 @@
+# Avada Kedavra addon for Iron's Spells 'n Spellbooks
+
+This repository contains a Forge 1.20.1 mod project that adds a custom Lightning spell named **Avada Kedavra** using the Iron's Spells 'n Spellbooks API.
+
+## Requirements
+
+- Java 17
+- Minecraft 1.20.1
+- Forge 47.4.10
+- Iron's Spells 'n Spellbooks 1.20.1 / 3.16.1 jar
+
+## Important setup step
+
+Download the matching Iron's Spells 'n Spellbooks jar for your environment and place it in the `libs` folder:
+
+`libs/irons_spellbooks-1.20.1-3.16.1.jar`
+
+Then run:
+
+```bash
+./gradlew build
+```
+
+## Included spell behavior
+
+- School: Lightning
+- Rarity: Legendary
+- Range: 50 blocks
+- Damage: 100 -> 200 at level 1 -> 2
+- Tick damage: 30 -> 60 every 0.25s for 1s
+- Max total damage: 220 -> 440
+- Cooldown: 10s -> 20s
+- Ignores armor and shields
+- Applies Wither for 30s if the target survives
+- Fires 3 lightning bolts
+
+## Credits
+
+- API reference: Iron's Spells 'n Spellbooks public source
+- Built as a Forge addon for the `irons_spellbooks` spell registry

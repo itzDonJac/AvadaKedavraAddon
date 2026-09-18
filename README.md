@@ -1,2 +1,19 @@
-# AvadaKedavraAddon
-Minecraft 1.20.1 Forge addon for Iron's Spells 'n Spellbooks 3.16.1, adding the Lightning spell Avada Kedavra.
+# Gradle
+.gradle/
+build/
+run/
+
+# Java
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Generated resource dirs
+src/generated/
+
+# Local dependency jars downloaded manually
+libs/*.jar

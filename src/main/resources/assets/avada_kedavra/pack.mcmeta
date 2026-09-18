@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:pack",
+  "pack": {
+    "description": "Avada Kedavra addon language resources",
+    "pack_format": 15
+  }
+}
