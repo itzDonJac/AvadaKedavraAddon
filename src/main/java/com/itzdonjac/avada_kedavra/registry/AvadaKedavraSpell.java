@@ -15,10 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
@@ -33,7 +29,6 @@ public final class AvadaKedavraSpell extends AbstractSpell {
             .setMinRarity(SpellRarity.LEGENDARY)
             .setSchoolResource(SchoolRegistry.LIGHTNING_RESOURCE)
             .setMaxLevel(2)
-            // The 1.20.1 ISnS API stores cooldown in DefaultConfig. The API has no level argument here.
             .setCooldownSeconds(10)
             .build();
 
@@ -46,13 +41,19 @@ public final class AvadaKedavraSpell extends AbstractSpell {
     }
 
     @Override
-    public ResourceLocation getSpellResource() { return ID; }
+    public ResourceLocation getSpellResource() {
+        return ID;
+    }
 
     @Override
-    public DefaultConfig getDefaultConfig() { return config; }
+    public DefaultConfig getDefaultConfig() {
+        return config;
+    }
 
     @Override
-    public CastType getCastType() { return CastType.INSTANT; }
+    public CastType getCastType() {
+        return CastType.INSTANT;
+    }
 
     @Override
     public boolean checkPreCastConditions(Level level, int spellLevel, LivingEntity caster, MagicData data) {
@@ -62,9 +63,9 @@ public final class AvadaKedavraSpell extends AbstractSpell {
     @Override
     public List<MutableComponent> getUniqueInfo(int spellLevel, LivingEntity caster) {
         return List.of(
-                Component.translatable("ui.irons_spellbooks.damage", getInitialDamage(spellLevel)),
+                Component.translatable("ui.irons_spellbooks.damage", getTotalDamage(spellLevel)),
                 Component.translatable("ui.irons_spellbooks.distance", RANGE),
-                Component.literal("+ " + getTickDamage(spellLevel) + " ogni 0,25 s per 1 s")
+                Component.literal("4 colpi ogni 0,25 s; Wither 20 s")
         );
     }
 
@@ -72,26 +73,36 @@ public final class AvadaKedavraSpell extends AbstractSpell {
     public void onCast(Level level, int spellLevel, LivingEntity caster, CastSource source, MagicData data) {
         if (level instanceof ServerLevel server && data.getAdditionalCastData() instanceof TargetEntityCastData targetData) {
             LivingEntity target = targetData.getTarget(server);
-            if (target != null && target.isAlive() && caster.getMainHandItem() != null) {
-                AvadaKedavraServerEvents.applyTrueDamage(target, getInitialDamage(spellLevel));
-                for (int i = 0; i < 4; i++) {
-                    AvadaKedavraServerEvents.schedule(target, getTickDamage(spellLevel), 5 * (i + 1));
-                }
-                if (target.isAlive()) {
-                    target.addEffect(new MobEffectInstance(MobEffects.WITHER, 30 * 20, 0, false, true, true));
-                }
-                for (int i = 0; i < 3; i++) {
-                    LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(server);
-                    if (bolt != null) {
-                        bolt.moveTo(target.getX(), target.getY(), target.getZ());
-                        server.addFreshEntity(bolt);
-                    }
+            if (target != null && target.isAlive()) {
+                float tickDamage = getTickDamage(spellLevel);
+
+                // Impact at t=0, followed by one hit at 0.25, 0.50, 0.75 and 1.00 seconds.
+                for (int strike = 0; strike < 5; strike++) {
+                    int delay = strike == 0 ? 1 : strike * 5;
+                    boolean finalStrike = strike == 4;
+                    AvadaKedavraServerEvents.schedule(
+                            caster, target,
+                            strike == 0 ? getInitialDamage(spellLevel) : tickDamage,
+                            delay,
+                            true,
+                            finalStrike
+                    );
                 }
             }
         }
+
         super.onCast(level, spellLevel, caster, source, data);
     }
 
-    private static float getInitialDamage(int level) { return level <= 1 ? 100.0F : 200.0F; }
-    private static float getTickDamage(int level) { return level <= 1 ? 30.0F : 60.0F; }
+    private static float getInitialDamage(int level) {
+        return level <= 1 ? 100.0F : 200.0F;
+    }
+
+    private static float getTickDamage(int level) {
+        return level <= 1 ? 30.0F : 60.0F;
+    }
+
+    private static float getTotalDamage(int level) {
+        return getInitialDamage(level) + getTickDamage(level) * 4.0F;
+    }
 }
