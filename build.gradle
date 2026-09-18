@@ -1,6 +1,5 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
     id 'maven-publish'
     id 'idea'
 }
@@ -43,14 +42,16 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://cursemaven.com' }
-    flatDir {
-        dir 'libs'
-    }
 }
+
+def localModJars = fileTree(dir: 'libs', includes: ['*.jar'])
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf(fileTree('libs') { include '*.jar' })
+
+    // This is intentionally a normal compile/runtime dependency. The addon only
+    // references the public API; ForgeGradle deobfuscation is not required for it.
+    implementation localModJars
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
