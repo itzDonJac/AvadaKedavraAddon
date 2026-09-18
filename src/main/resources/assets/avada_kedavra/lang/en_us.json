@@ -1,14 +1,4 @@
 {
-  "language": {
-    "en_us": {
-      "name": "English (US)",
-      "region": "US",
-      "bidirectional": false
-    },
-    "it_it": {
-      "name": "Italiano (IT)",
-      "region": "IT",
-      "bidirectional": false
-    }
-  }
+  "spell.avada_kedavra.avada_kedavra": "Avada Kedavra",
+  "spell.avada_kedavra.avada_kedavra.description": "A legendary Lightning spell that strikes the target with three bolts and applies Wither."
 }
