@@ -23,7 +23,7 @@ import java.util.List;
 @AutoSpellConfig
 public final class AvadaKedavraSpell extends AbstractSpell {
     private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("avada_kedavra", "avada_kedavra");
-    private static final float RANGE = 50.0F;
+    private static final int RANGE = 50;
 
     private final DefaultConfig config = new DefaultConfig()
             .setMinRarity(SpellRarity.LEGENDARY)
