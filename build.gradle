@@ -42,14 +42,14 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { url = 'https://cursemaven.com' }
+    flatDir { dirs 'libs' }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // CurseForge file 8237094 is the Forge 1.20.1 build of ISnS 3.16.1.
-    // Using CurseMaven avoids accidentally compiling against a client/API/NeoForge jar.
-    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8237094")
+    // Use the CCBB custom jar in /libs so the build matches the pack exactly.
+    implementation fg.deobf(files('libs/irons_spellbooks-1.20.1-3.16.1-CCBB-ARCHEVOKER-GRIMOIRE-V2.jar'))
 }
 
 // Ignore the unused example package included by the Forge MDK zip.
