@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47.4,48)"
+loaderVersion="[47,48)"
 license="MIT"
 issueTrackerURL="${mod_issue_tracker}"
 
@@ -14,7 +14,7 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
 modId="forge"
 mandatory=true
-versionRange="[47.4,48)"
+versionRange="[47,48)"
 ordering="NONE"
 side="BOTH"
 
